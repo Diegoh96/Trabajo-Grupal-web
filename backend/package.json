@@ -1,0 +1,22 @@
+{
+  "name": "cinemark-sistema",
+  "version": "1.0.0",
+  "description": "Sistema de cine full stack con Node.js, Express, frontend HTML/CSS/JS y MySQL",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "db:init": "node src/init-db.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.5"
+  },
+  "devDependencies": {}
+}

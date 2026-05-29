@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cinemark Sistema</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home">Cinemark</a>
+    <nav>
+      <a href="#home">Inicio</a>
+      <a href="#movies">Cartelera</a>
+      <a href="#tickets">Reservas</a>
+      <a href="#history">Historial</a>
+      <a href="#admin">Admin</a>
+    </nav>
+    <div class="session-actions">
+      <span id="sessionUser" class="session-user"></span>
+      <button id="loginOpen" class="btn btn-red">Login</button>
+      <button id="logoutBtn" class="btn btn-ghost hidden">Salir</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero panel">
+      <div class="hero-copy">
+        <p class="eyebrow">Reserva online</p>
+        <h1>Elige tu película, selecciona asiento y confirma tu entrada.</h1>
+        <p>Sistema de cine con backend, frontend, usuarios, historial, panel administrativo, confitería opcional y mapa de asientos.</p>
+        <div class="actions">
+          <a class="btn btn-gold" href="#tickets">Reservar asiento</a>
+          <a class="btn btn-ghost" href="#movies">Ver cartelera</a>
+        </div>
+      </div>
+      <div class="hero-card cinema-screen-card">
+        <div class="screen-visual">
+          <span>NOW SHOWING</span>
+          <strong>CINEMARK</strong>
+          <small>Funciones · Salas · Reservas</small>
+        </div>
+        <div class="floating-ticket">
+          <span>Entrada general</span>
+          <strong>Desde $5200</strong>
+        </div>
+      </div>
+    </section>
+
+    <section id="movies" class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Programación</p>
+          <h2>Cartelera actual</h2>
+        </div>
+        <span class="hint">Sin artistas ni fotografías: solo información de películas y funciones.</span>
+      </div>
+      <div id="moviesGrid" class="grid cards"></div>
+    </section>
+
+    <section id="tickets" class="section ticket-section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Reserva de asientos</p>
+          <h2>Selecciona tus lugares</h2>
+        </div>
+      </div>
+      <div class="ticket-layout">
+        <div class="panel stage-panel">
+          <label>Película y función</label>
+          <select id="sessionSelect"></select>
+          <div class="stage">PANTALLA</div>
+          <div id="seatMap" class="seat-map"></div>
+          <p class="legend"><span class="seat available"></span> Disponible <span class="seat selected"></span> Seleccionado <span class="seat sold"></span> Vendido</p>
+        </div>
+        <form id="bookingForm" class="panel order-panel">
+          <h3>Resumen de reserva</h3>
+          <p id="buyerHint" class="hint">Puedes reservar como invitado o iniciar sesión para guardar tu historial.</p>
+          <div id="selectedList" class="selected-list">Sin asientos seleccionados</div>
+          <input name="nombre_cliente" placeholder="Nombre completo" required>
+          <input name="email_cliente" type="email" placeholder="Correo" required>
+          <label>Confitería opcional</label>
+          <select name="combo">
+            <option value="">Sin combo</option>
+            <option value="Combo grande">Combo grande</option>
+            <option value="Popcorn">Popcorn</option>
+            <option value="Bebida">Bebida</option>
+          </select>
+          <input name="combo_cantidad" type="number" min="1" value="1" placeholder="Cantidad">
+          <button class="btn btn-red" type="submit">Confirmar reserva</button>
+          <p id="bookingMessage" class="message"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="history" class="section history-section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Cuenta cliente</p>
+          <h2>Historial de reservas</h2>
+        </div>
+      </div>
+      <div class="panel table-panel">
+        <div id="historyContent" class="muted">Inicia sesión para ver tus reservas.</div>
+      </div>
+    </section>
+
+    <section id="admin" class="section admin-section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Panel</p>
+          <h2>Administración</h2>
+        </div>
+      </div>
+      <div class="admin-grid">
+        <form id="adminLogin" class="panel">
+          <h3>Acceso admin</h3>
+          <input name="email" type="email" placeholder="admin@cinemark.com" required>
+          <input name="password" type="password" placeholder="Contraseña" required>
+          <button class="btn btn-gold" type="submit">Entrar</button>
+          <p class="hint">Usuario creado con <code>npm run db:init</code>.</p>
+        </form>
+        <div class="panel">
+          <h3>Resumen</h3>
+          <div id="adminSummary" class="stats muted">Inicia sesión como admin para ver métricas.</div>
+        </div>
+      </div>
+      <div id="bookingsTable" class="panel table-panel hidden"></div>
+    </section>
+  </main>
+
+  <dialog id="loginDialog">
+    <div class="login-box">
+      <button class="close" id="loginClose" type="button">×</button>
+      <div class="auth-tabs">
+        <button id="showLoginTab" class="auth-tab active" type="button">Iniciar sesión</button>
+        <button id="showRegisterTab" class="auth-tab" type="button">Crear usuario</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <h3>Login cliente</h3>
+        <input name="email" type="email" placeholder="Correo" required>
+        <input name="password" type="password" placeholder="Contraseña" required>
+        <button class="btn btn-red" type="submit">Entrar</button>
+      </form>
+
+      <form id="registerForm" class="auth-form hidden">
+        <h3>Crear usuario</h3>
+        <input name="nombre" placeholder="Nombre completo" required>
+        <input name="email" type="email" placeholder="Correo" required>
+        <input name="password" type="password" placeholder="Contraseña mínimo 6 caracteres" minlength="6" required>
+        <button class="btn btn-gold" type="submit">Crear cuenta</button>
+      </form>
+
+      <p id="loginMessage" class="message"></p>
+    </div>
+  </dialog>
+
+  <footer>
+    <strong>Cinemark Sistema</strong>
+    <span>Node.js · Express · MySQL · MVC + Patrones</span>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
